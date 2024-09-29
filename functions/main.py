@@ -49,15 +49,17 @@ def embedding(req: https_fn.CallableRequest) -> Any:
     embedding = client.embeddings.create(input=texts, model="text-embedding-3-small", dimensions=512)
     vectors = list(map(lambda x: x.embedding, embedding.data))
 
-    reducer = umap.UMAP(n_components=3)
-    vec3 = reducer.fit_transform(vectors)
+    reducer = umap.UMAP()
+    vec2 = reducer.fit_transform(vectors)
+    # reducer = umap.UMAP(n_components=3)
+    # vec3 = reducer.fit_transform(vectors)
 
     res = list(
       map(
         lambda x: {
           "country": x[1].function.parsed_arguments.name,
           "answer": x[1].function.parsed_arguments.answer,
-          "embedding": vec3[x[0]].tolist(),
+          "embedding": vec2[x[0]].tolist(),
         },
         enumerate(completion.choices[0].message.tool_calls),
       )
