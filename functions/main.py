@@ -26,12 +26,16 @@ def embedding(req: https_fn.CallableRequest) -> Any:
 
     openaiApiKey = OPENAI_API_KEY.value
     client = OpenAI(api_key=openaiApiKey)
+    system_content = "あなたは優秀な歴史学者であり、地政学者です。\
+      ユーザーの質問に対して、G20の各国・地域について、それぞれ簡潔に答えてください。\
+      必ず「フランス、アメリカ、イギリス、ドイツ、日本、イタリア、カナダ、EU、アルゼンチン、オーストラリア、ブラジル、中国、インド、インドネシア、メキシコ、韓国、ロシア、サウジアラビア、南アフリカ、トルコ、AU」のそれぞれについて説明してください。\
+      回答できない場合は「分からない」という説明にしてください。"
     completion = client.beta.chat.completions.parse(
       model="gpt-4o",
       messages=[
         {
           "role": "system",
-          "content": "あなたは優秀な歴史学者であり、地政学者です。ユーザーの質問に対して、G20の各国について、それぞれ簡潔に答えてください。情報の無い国については、「分からない」という説明にして必ず20カ国全ての国について説明してください。",
+          "content": system_content,
         },
         {
           "role": "user",
