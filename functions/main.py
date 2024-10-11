@@ -7,6 +7,9 @@ from firebase_functions import https_fn, options
 from firebase_functions.params import SecretParam
 from openai import OpenAI, pydantic_function_tool
 from pydantic import BaseModel
+from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.cluster import KMeans
+import numpy as np
 import umap
 
 OPENAI_API_KEY = SecretParam("OPENAI_API_KEY")
@@ -58,12 +61,17 @@ def embedding(req: https_fn.CallableRequest) -> Any:
     # reducer = umap.UMAP(n_components=3)
     # vec3 = reducer.fit_transform(vectors)
 
+    similarity = cosine_similarity(vectors, vectors)
+    cluster = KMeans(n_clusters=3, init="k-means++", random_state=0).fit(vectors)
+
     res = list(
       map(
         lambda x: {
           "country": x[1].function.parsed_arguments.name,
           "answer": x[1].function.parsed_arguments.answer,
           "embedding": vec2[x[0]].tolist(),
+          "similarity": similarity[x[0]].tolist(),
+          "cluster": int(cluster.labels_[x[0]]),
         },
         enumerate(completion.choices[0].message.tool_calls),
       )
