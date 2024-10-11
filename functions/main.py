@@ -69,7 +69,8 @@ def embedding(req: https_fn.CallableRequest) -> Any:
         lambda x: {
           "country": x[1].function.parsed_arguments.name,
           "answer": x[1].function.parsed_arguments.answer,
-          "embedding": vec2[x[0]].tolist(),
+          "embedding-x": float(vec2[x[0]][0]),
+          "embedding-y": float(vec2[x[0]][1]),
           "similarity": similarity[x[0]].tolist(),
           "cluster": int(cluster.labels_[x[0]]),
         },

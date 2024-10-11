@@ -11,40 +11,38 @@ const ScatterPlot = ({ active, data }: Props) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const items = data.map((item) => {
-      return {
-        x: item.embedding[0],
-        y: item.embedding[1],
-        country: item.country,
-        answer: item.answer,
-      };
-    });
     const plot = Plot.plot({
       inset: 20,
       nice: true,
       grid: true,
       color: {
-        type: "diverging",
-        scheme: "BuRd"
+        scheme: "RdYlGn",
+        domain: [0, 1, 2], // in age order
       },
       marks: [
         Plot.frame(),
-        active?.embedding && Plot.dot(items, {
-          x: active.embedding[0],
-          y: active.embedding[1],
+        Plot.hull(data, {
+          x: "embedding-x",
+          y: "embedding-y",
+          fill: "cluster",
+          fillOpacity: 0.2,
+        }),
+        active && Plot.dot([active], {
+          x: "embedding-x",
+          y: "embedding-y",
           fill: "red",
-          r: 8
+          r: 6,
         }),
-        Plot.dot(items, {
-          x: "x",
-          y: "y",
-          stroke: "x",
+        Plot.dot(data, {
+          x: "embedding-x",
+          y: "embedding-y",
+          fill: "cluster",
         }),
-        Plot.text(items, { x: "x", y: "y", text: "country", textAnchor: "start", dx: 6 }),
+        Plot.text(data, { x: "embedding-x", y: "embedding-y", text: "country", textAnchor: "start", dx: 6 }),
         active == null ?
-          Plot.tip(items, Plot.pointer({
-            x: "x",
-            y: "y",
+          Plot.tip(data, Plot.pointer({
+            x: "embedding-x",
+            y: "embedding-y",
             title: (d) => d.answer,
             fill: "black",
           })) : null,
