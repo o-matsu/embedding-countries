@@ -3,6 +3,6 @@ export default interface DataItem {
   answer: string;
   "embedding-x": number;
   "embedding-y": number;
-  similarity: number;
+  similarity: number[];
   cluster: number;
 }

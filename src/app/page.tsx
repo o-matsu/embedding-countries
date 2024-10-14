@@ -10,7 +10,7 @@ import Loading from "./loading";
 import DataItem from "./data";
 import Result from "./result";
 
-export default function Home() {
+export default function Page() {
   const [query, setQuery] = useState<string>("");
   const [data, setData] = useState<DataItem[]>([]);
   const [loading, setLoading] = useState(false);

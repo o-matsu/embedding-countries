@@ -1,6 +1,6 @@
 "use client"
 
-import QueryForm from "./query-form";
+import QueryForm from "../components/query-form";
 import DataItem from "./data";
 import {
   Table,
@@ -10,8 +10,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import ScatterPlot from "./scatter-plot";
+import ScatterPlot from "../components/scatter-plot";
 import { useState } from "react";
+import Globe from "@/components/globe";
 
 type Props = {
   query: string;
@@ -27,7 +28,10 @@ export default function Result({ query, data, onSubmit }: Props) {
         <QueryForm query={query} onSubmit={onSubmit} />
       </div>
 
-      <ScatterPlot active={hoverItem} data={data} />
+      <div className="md:flex">
+        <ScatterPlot active={hoverItem} data={data} />
+        <Globe active={hoverItem} data={data} />
+      </div>
 
       <Table>
         <TableHeader>
