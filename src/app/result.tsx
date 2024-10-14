@@ -33,22 +33,24 @@ export default function Result({ query, data, onSubmit }: Props) {
         <Globe active={hoverItem} data={data} />
       </div>
 
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-[200px]">国名</TableHead>
-            <TableHead>説明</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {data.map((item, index) => (
-            <TableRow key={index} onMouseEnter={() => setHoverItem(item)} onMouseLeave={() => setHoverItem(null)}>
-              <TableCell className="font-medium">{item.country}</TableCell>
-              <TableCell>{item.answer}</TableCell>
+      <div className="mt-8 h-96 overflow-auto">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-[200px] sticky top-0">国名</TableHead>
+              <TableHead className="sticky top-0">説明</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {data.map((item, index) => (
+              <TableRow key={index} onMouseEnter={() => setHoverItem(item)} onMouseLeave={() => setHoverItem(null)}>
+                <TableCell className="font-medium">{item.country}</TableCell>
+                <TableCell>{item.answer}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
     </>
   );
 }
